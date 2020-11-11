@@ -57,6 +57,7 @@ class TodoAddEdit : AppCompatActivity() {
     }
     fun formSetUpEdit(){
         setTitle("Editar tarea")
+
         vTodoInputTitle.setText(intent.getStringExtra("TITLE"))
         vTodoInputMessage.setText(intent.getStringExtra("MESSAGE"))
         vTodoInputDate.setText(intent.getStringExtra("DATE"))
@@ -65,7 +66,16 @@ class TodoAddEdit : AppCompatActivity() {
             updateImage(it)
         }
         vTodoBtnSave.setOnClickListener {
-
+            // Validaciones
+            val intent = Intent().apply {
+                putExtra("ID", intent.getIntExtra("ID", -1))
+                putExtra("TITLE", vTodoInputTitle.text.toString())
+                putExtra("MESSAGE", vTodoInputMessage.text.toString())
+                putExtra("DATE", vTodoInputDate.text.toString())
+                putExtra("IMAGE_URI", vTodoInputImage.text.toString())
+            }
+            setResult(Activity.RESULT_OK, intent)
+            onBackPressed()
         }
 
     }

@@ -1,20 +1,18 @@
 package TodoItems
 
 import android.content.Context
-import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.listadetareasdatospersistentes.R
 import com.squareup.picasso.Picasso
-import helpers.ActivitiesHelper
 import kotlinx.android.synthetic.main.activity_main_todo_item.view.*
 
-class TodoListAdapter (val items:MutableList<TodoItemData>, val context:Context):RecyclerView.Adapter<TodoListAdapter.TodoHolder>(){
+class TodoListAdapter (val items:MutableList<TodoItemData>, val context:Context, val onClickEdit:(item:TodoItemData) -> Unit):RecyclerView.Adapter<TodoListAdapter.TodoHolder>(){
 
     class TodoHolder(val itemTemplate:View):RecyclerView.ViewHolder(itemTemplate) {
-        fun render(item:TodoItemData, context: Context) {
+        fun render(item:TodoItemData, context: Context, onClickEdit:(item:TodoItemData) -> Unit) {
             /* Datos del template */
             itemTemplate.vTodoTitle.text = item.title
             itemTemplate.vTodoMessage.text = item.message
@@ -22,7 +20,7 @@ class TodoListAdapter (val items:MutableList<TodoItemData>, val context:Context)
             Picasso.get().load(item.imageUri).into(itemTemplate.vTodoImage)
             /* Button Listeners */
             itemTemplate.vTodoEdit.setOnClickListener {
-                context.startActivity(ActivitiesHelper().openEditTodo(context, item))
+                onClickEdit(item)
             }
             itemTemplate.vTodoDone.setOnClickListener {
                 println("=============================")
@@ -38,7 +36,7 @@ class TodoListAdapter (val items:MutableList<TodoItemData>, val context:Context)
     }
 
     override fun onBindViewHolder(holder: TodoHolder, position: Int) {
-        holder.render(items[position], context)
+        holder.render(items[position], context, onClickEdit)
     }
 
     override fun getItemCount(): Int {

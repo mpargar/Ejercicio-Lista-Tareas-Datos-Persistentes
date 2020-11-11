@@ -38,21 +38,21 @@ class MainActivity : AppCompatActivity() {
                     )
                 )
             } else if(requestCode == ActivitiesHelper().OPEN_EDIT_TODO_RID) {
-                //
+                var elemento = todoItems?.find { it.id == data?.getIntExtra("ID", -1)!!}
+                elemento?.title = data?.getStringExtra("TITLE")!!
+                elemento?.message = data?.getStringExtra("MESSAGE")!!
+                elemento?.date = data?.getStringExtra("DATE")!!
+                elemento?.imageUri = data?.getStringExtra("IMAGE_URI")!!
             }
-            println("=======================")
-            println(requestCode)
-            println(resultCode)
-
-
-
-
-            println("=======================")
+            adapter?.notifyDataSetChanged()
             super.onActivityResult(requestCode, resultCode, data)
         } else {
             // Si algo falla
         }
+    }
 
+    fun clickEdit(item:TodoItemData) {
+        startActivityForResult(ActivitiesHelper().openEditTodo(this, item), ActivitiesHelper().OPEN_EDIT_TODO_RID)
     }
 
     /* SetUp fuctions */
@@ -61,11 +61,12 @@ class MainActivity : AppCompatActivity() {
             TodoItemData(1, "Entrega proyecto final", "Esta debe ser la descripción de la tarea a realizar.", "03/11/2020", "https://culcobcs.com/wp-content/uploads/2019/03/UABCS-1.jpg")
         )
         todoItems.add(
-            TodoItemData(2, "Entrega proyecto final", "Esta debe ser la descripción de la tarea a realizar.", "03/11/2020", "https://culcobcs.com/wp-content/uploads/2019/03/UABCS-1.jpg")
+            TodoItemData(2, "Entrega proyecto final", "Esta debe ser la descripción de la tarea a realizar.", "03/11/2020", "https://www.princot.com/wp-content/uploads/2020/06/cuadros-decorativos-canvas-800x800.jpg")
         )
     }
+
     fun initTodoRecycler() {
-        adapter = TodoListAdapter(todoItems, this)
+        adapter = TodoListAdapter(todoItems, this, ::clickEdit)
         vRecyclerTodos.layoutManager = LinearLayoutManager(this)
         vRecyclerTodos.adapter = adapter
     }
