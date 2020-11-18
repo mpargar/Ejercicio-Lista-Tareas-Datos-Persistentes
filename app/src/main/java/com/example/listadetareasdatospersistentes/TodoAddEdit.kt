@@ -59,7 +59,7 @@ class TodoAddEdit : AppCompatActivity() {
         setTitle("Editar tarea")
 
         vTodoInputTitle.setText(intent.getStringExtra("TITLE"))
-        vTodoInputMessage.setText(intent.getStringExtra("MESSAGE"))
+        vTodoInputMessage.setText(intent.getStringExtra("MESSAGE "))
         vTodoInputDate.setText(intent.getStringExtra("DATE"))
         intent.getStringExtra("IMAGE_URI")?.let {
             vTodoInputImage.setText(it)

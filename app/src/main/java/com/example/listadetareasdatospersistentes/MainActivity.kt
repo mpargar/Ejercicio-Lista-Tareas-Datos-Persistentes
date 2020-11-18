@@ -1,5 +1,6 @@
 package com.example.listadetareasdatospersistentes
 
+import TodoItems.TodoDb
 import TodoItems.TodoItemData
 import TodoItems.TodoListAdapter
 import android.app.Activity
@@ -13,9 +14,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     var todoItems:MutableList<TodoItemData> = ArrayList()
     var adapter:TodoListAdapter? = null
+    var todoDbController:TodoDb.Controller? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        todoDbController = TodoDb.Controller(this)
         this.setTitle("Lista de tareas")
         vAdd.setOnClickListener {
             startActivityForResult(ActivitiesHelper().openAddTodo(this), ActivitiesHelper().OPEN_ADD_TODO_RID)
@@ -57,12 +60,15 @@ class MainActivity : AppCompatActivity() {
 
     /* SetUp fuctions */
     fun getTodos(){
+        /*
         todoItems.add(
             TodoItemData(1, "Entrega proyecto final", "Esta debe ser la descripción de la tarea a realizar.", "03/11/2020", "https://culcobcs.com/wp-content/uploads/2019/03/UABCS-1.jpg")
         )
         todoItems.add(
             TodoItemData(2, "Entrega proyecto final", "Esta debe ser la descripción de la tarea a realizar.", "03/11/2020", "https://www.princot.com/wp-content/uploads/2020/06/cuadros-decorativos-canvas-800x800.jpg")
         )
+        */
+        todoItems = todoDbController!!.getTodos()
     }
 
     fun initTodoRecycler() {
